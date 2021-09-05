@@ -59,7 +59,7 @@ spec:
             storage: 4Gi
       source:
         http:
-          url: "https://10.63.19.14:9440/api/nutanix/v3/images/d69dcf69-7117-438e-9745-72529f323815/file"
+          url: "https://10.63.19.14:9440/api/nutanix/v3/images/d69dcf69-7117-438e-9745-72529f323815/file"   #This url is just an example. You should change it with the right Prism Central IP address and image UUID.
           secretRef: "pc-access-secret"
           certConfigMap: "pc-config-map"
 
