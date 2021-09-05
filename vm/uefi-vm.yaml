@@ -1,0 +1,65 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: bionic-uefi-vm
+  name: bionic-uefi-vm
+  namespace: vm-objects
+spec:
+  running: true
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: bionic-uefi-vm
+    spec:
+      domain:
+        cpu:
+          cores: 2
+        firmware:
+          bootloader:
+            efi:
+              secureBoot: false
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: datavolumedisk1
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+          interfaces:
+          - name: default
+            bridge: {}
+        resources:
+          requests:
+            memory: 2048M
+      networks:
+      - name: default
+        pod: {}
+      volumes:
+      - dataVolume:
+          name: bionic-uefi-dv
+        name: datavolumedisk1
+      - cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            password: nutanix/4u
+            ssh_pwauth: True
+            chpasswd: { expire: False }
+        name: cloudinitdisk
+  dataVolumeTemplates:
+  - metadata:
+      name: bionic-uefi-dv
+    spec:
+      pvc:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 4Gi
+      source:
+        http:
+          url: "https://10.63.19.14:9440/api/nutanix/v3/images/d69dcf69-7117-438e-9745-72529f323815/file"
+          secretRef: "pc-access-secret"
+          certConfigMap: "pc-config-map"
+

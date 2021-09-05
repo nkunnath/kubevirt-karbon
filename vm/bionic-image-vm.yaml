@@ -1,0 +1,39 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    kubevirt.io/vm: bionic-image-vm
+  name: bionic-image-vm
+  namespace: vm-objects
+spec:
+  domain:
+    cpu:
+      cores: 2
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: datavolumedisk1
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+      interfaces:
+      - name: default
+        bridge: {}
+    resources:
+      requests:
+        memory: 2048M
+  networks:
+  - name: default
+    pod: {}
+  volumes:
+  - dataVolume:
+      name: bionic-image-dv
+    name: datavolumedisk1
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: nutanix/4u
+        ssh_pwauth: True
+        chpasswd: { expire: False }
+    name: cloudinitdisk

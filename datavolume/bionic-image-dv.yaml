@@ -1,0 +1,18 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: bionic-image-dv
+  namespace: vm-objects
+spec:
+  source:
+      http:
+         url: "https://10.63.19.14:9440/api/nutanix/v3/images/c6987acd-27b8-474b-99e1-0bacf488af59/file" 
+         secretRef: "pc-access-secret"
+         certConfigMap: "pc-config-map"
+  pvc:
+    storageClassName: virtual-machine-sc
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: "4Gi"
