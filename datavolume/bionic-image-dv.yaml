@@ -6,11 +6,11 @@ metadata:
 spec:
   source:
       http:
-         url: "https://10.63.19.14:9440/api/nutanix/v3/images/c6987acd-27b8-474b-99e1-0bacf488af59/file" 
+         url: "https://10.63.19.14:9440/api/nutanix/v3/images/c6987acd-27b8-474b-99e1-0bacf488af59/file"  #This url is just an example. You should change it with the right Prism Central IP address and image UUID.
          secretRef: "pc-access-secret"
          certConfigMap: "pc-config-map"
   pvc:
-    storageClassName: virtual-machine-sc
+    storageClassName: virtual-machine-sc  # Update storage class
     accessModes:
       - ReadWriteOnce
     resources:
